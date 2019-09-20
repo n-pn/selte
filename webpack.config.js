@@ -21,7 +21,7 @@ module.exports = {
     path: path.join(__dirname, 'public'),
     filename: '[name].js',
     chunkFilename: '[name].[id].js',
-    publicPath: `/`,
+    publicPath: '/',
   },
   resolve: { alias, extensions, mainFields },
   module: {
@@ -35,7 +35,7 @@ module.exports = {
             preprocess,
             dev,
             hydratable: true,
-            hotReload: false, // pending https://github.com/sveltejs/svelte/issues/2377
+            hotReload: true,
           },
         },
       },
@@ -57,15 +57,12 @@ module.exports = {
   },
   mode,
   plugins: [
-    // pending https://github.com/sveltejs/svelte/issues/2377
-    // dev && new webpack.HotModuleReplacementPlugin(),
+    dev && new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
       'process.browser': true,
       'process.env.NODE_ENV': JSON.stringify(mode),
     }),
     new MiniCssExtractPlugin({
-      // Options similar to the same options in webpackOptions.output
-      // all options are optional
       filename: '[name].css',
       chunkFilename: '[name].[id].css',
       ignoreOrder: false, // Enable to remove warnings about conflicting order
@@ -73,11 +70,12 @@ module.exports = {
   ].filter(Boolean),
   devtool: dev && 'inline-source-map',
   devServer: {
+    hot: true,
     watchContentBase: true,
     contentBase: path.join(__dirname, 'public'),
-    port: 9000,
+    port: 3000,
     proxy: {
-      '/api': 'http://localhost:8000',
+      '/api': 'http://localhost:4000',
     },
     historyApiFallback: {
       index: 'index.html',
