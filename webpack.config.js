@@ -14,7 +14,6 @@ const { preprocess } = require('./svelte.config')
 module.exports = {
   stats: 'minimal',
   entry: {
-    global: path.join(__dirname, 'scss/global.scss'),
     bundle: path.join(__dirname, 'src/index.js'),
   },
   output: {
